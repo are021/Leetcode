@@ -61,10 +61,41 @@ class RandomizedSet:
         return random.choice(self.data)
         
 # Your RandomizedSet object will be instantiated and called as such:
-obj = RandomizedSet()
-param_1 = obj.remove(0)
-param_2 = obj.remove(0)
-param_3 = obj.insert(0)
-param_4 = obj.getRandom()
-param_5 = obj.remove(0)
-param_6 = obj.insert(0)
+# obj = RandomizedSet()
+# param_1 = obj.remove(0)
+# param_2 = obj.remove(0)
+# param_3 = obj.insert(0)
+# param_4 = obj.getRandom()
+# param_5 = obj.remove(0)
+# param_6 = obj.insert(0)
+
+# Cleaner Solution (Still O(1) everything)
+class RandomizedSet:
+
+    def __init__(self):
+        self.data = []
+        self.added = {}
+
+    def insert(self, val: int) -> bool:
+        if val in self.added:
+            return False
+        self.added[val] = len(self.data)
+        self.data.append(val)
+        return True
+        
+    def remove(self, val: int) -> bool:
+        if val not in self.added:
+            return False
+        
+        idx = self.added[val]
+        last = self.data[-1]
+        self.data[idx] = last
+        self.data.pop()
+        
+        self.added[last] = idx
+        del self.added[val]
+
+        return True
+
+    def getRandom(self) -> int:
+        return random.choice(self.data)
